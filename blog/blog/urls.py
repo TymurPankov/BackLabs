@@ -7,11 +7,11 @@ from .yasg import urlpatterns as doc_url
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
 
     # path to our account's app endpoints
+    path("chat/", include("chat.urls")),
     path("", include("blogAuth.url")),
-    path("", include("crblog.url"))
+    path("", include("crblog.url")),
 ]
 
 urlpatterns += doc_url

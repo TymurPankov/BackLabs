@@ -49,6 +49,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/profile/">Profile</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/chat/">Chat</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Auth
@@ -75,7 +78,6 @@
     <div style="text-align: center" id="blogs">
         <h2>My blogs:</h2>
     </div>
-
 </div>
 
 </body>
@@ -84,26 +86,14 @@
 <script>
 $(document).ready(function(){
 
-   $.ajax({
-     method: 'POST',
-     url: '/auth/jwt/refresh/',
-     data: {
-        'refresh': localStorage.getItem('RefreshAuthToken'),
-     },
-     success:function(data1) {
+
         $.ajax({
         method: 'GET',
         url: `/auth/users/me/`,
-        headers: {
-            'Authorization': `Bearer ${data1.access}`,
-        },
         success:function(data2) {
                     $.ajax({
                     method: 'GET',
                     url: `/api/accounts/profile/view/${data2.username}`,
-                    headers: {
-                        'Authorization': `Bearer ${data1.access}`,
-                    },
                     success:function(data3) {
                         $( "#username" ).append(data3.user)
                         $( "#mail" ).append(data2.email)
@@ -114,9 +104,6 @@ $(document).ready(function(){
                     $.ajax({
                     method: 'GET',
                     url: `/api/v1/blog/author/${data2.username}/`,
-                    headers: {
-                        'Authorization': `Bearer ${data1.access}`,
-                    },
                     success:function(data) {
                     console.log(data)
                         for (var i in data) {
@@ -124,25 +111,13 @@ $(document).ready(function(){
                             $( "#blogs" ).append( `<hr>` );
                             $(`#delete${data[i].id}`).click(function(){
                             console.log("DFSDFSF")
-                            $.ajax({
-                              method: 'POST',
-                              url: '/auth/jwt/refresh/',
-                              data: {
-                                 'refresh': localStorage.getItem('RefreshAuthToken'),
-                              },
-                              success:function(data5) {
                                  $.ajax({
                                  method: 'DELETE',
                                  url: `/api/v1/blogCreate/${data[i].id}/`,
-                                 headers: {
-                                     'Authorization': `Bearer ${data5.access}`,
-                                 },
                                  success:function(data6) {
 
                                  },
                                  })
-                              },
-                            })
 
                      })
                      }
@@ -150,11 +125,6 @@ $(document).ready(function(){
                   })
         }
         })
-    },
-    error:function(data1) {
-    window.location.assign("/login/")
-   	},
-   })
 })
 
 </script>

@@ -26,6 +26,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/profile/">Profile</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/chat/">Chat</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Auth
@@ -62,6 +65,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
 $(document).ready(function(){
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
    $.ajax({
      method: 'GET',
      url: '/api/v1/blog/{{object.id}}/',
@@ -74,19 +100,9 @@ $(document).ready(function(){
    	}
    })
 $('#b').click(function(){
-   $.ajax({
-     method: 'POST',
-     url: '/auth/jwt/refresh/',
-     data: {
-        'refresh': localStorage.getItem('RefreshAuthToken'),
-     },
-     success:function(data1) {
         $.ajax({
         method: 'GET',
         url: `/auth/users/me/`,
-        headers: {
-            'Authorization': `Bearer ${data1.access}`,
-        },
         success:function(data2) {
            $.ajax({
                 method: 'POST',
@@ -95,9 +111,6 @@ $('#b').click(function(){
                     'text': $( "#mes" ).val(),
                     'author': data2.id,
                     'blog': {{object.id}},
-                },
-                headers: {
-                    'Authorization': `Bearer ${data1.access}`,
                 },
                 success:function(data3) {
                     window.location.reload()
@@ -108,11 +121,6 @@ $('#b').click(function(){
            })
         }
         })
-    },
-    error:function(data1) {
-    window.location.assign("/login/")
-   	},
-   })
 })
 })
 

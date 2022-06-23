@@ -28,6 +28,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/profile/">Profile</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/chat/">Chat</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Auth
@@ -56,34 +59,44 @@
                     </div>
                     <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="message">
           </div>
-                <button type="submit" class="btn btn-danger" style="width: 100%" id="b">Submit</button>
+                <button type="submit" class="btn btn-danger" style="width: 100%" id="b">submit</button>
             </div>
 </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script>
 $(document).ready(function(){
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
 $('#b').click(function(){
-   $.ajax({
-     method: 'POST',
-     url: '/auth/jwt/refresh/',
-     data: {
-        'refresh': localStorage.getItem('RefreshAuthToken'),
-     },
-     success:function(data1) {
         $.ajax({
         method: 'GET',
         url: `/auth/users/me/`,
-        headers: {
-            'Authorization': `Bearer ${data1.access}`,
-        },
         success:function(data2) {
                     $.ajax({
                     method: 'POST',
                     url: `/api/v1/blogCreate/`,
-                    headers: {
-                        'Authorization': `Bearer ${data1.access}`,
-                    },
                     data: {
                       'author': data2.id,
                       'title':$( "#title" ).val(),
@@ -98,11 +111,6 @@ $('#b').click(function(){
                     })
         }
         })
-     },
-     error:function(data1) {
-            window.location.assign("/login/")
-   	},
-   })
 })
 })
 </script>

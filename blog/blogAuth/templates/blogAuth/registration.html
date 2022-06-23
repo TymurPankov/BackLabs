@@ -28,6 +28,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/profile/">Profile</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/chat/">Chat</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Auth
@@ -55,7 +58,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Password</span>
                     </div>
-                    <input type="text" class="form-control"  aria-describedby="basic-addon1", id="password">
+                    <input type="password" class="form-control"  aria-describedby="basic-addon1", id="password">
           </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -68,9 +71,10 @@
               <option value="Fm">Female</option>
           </select>
                 <div class="input-group mb-3" style="margin-top: 2%;">
+
                     <input type="date" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="date">
           </div>
-          <button type="submit" class="btn btn-danger" style="width: 100%" id="b">Submit</button>
+          <button type="submit" class="btn btn-danger" style="width: 100%" id="b">submit</button>
             </div>
     <a href="/login/">Sign in</a>
 </body>
@@ -78,6 +82,29 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script>
+$.ajaxSetup({
+     beforeSend: function(xhr, settings) {
+         function getCookie(name) {
+             var cookieValue = null;
+             if (document.cookie && document.cookie != '') {
+                 var cookies = document.cookie.split(';');
+                 for (var i = 0; i < cookies.length; i++) {
+                     var cookie = jQuery.trim(cookies[i]);
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     }
+});
 $(document).ready(function(){
 $('#b').click(function(){
 $.ajax({
@@ -93,14 +120,12 @@ $.ajax({
 					console.log(data)
                         $.ajax({
                           method: 'POST',
-                          url: '/auth/jwt/create/',
+                          url: '/api/accounts/auth',
                           data: {
                             'username':$( "#username" ).val(),
                             'password':$( "#password" ).val(),
                           },
                           success:function(data1) {
-                               localStorage.setItem('RefreshAuthToken', data1.refresh);
-                               console.log(localStorage.getItem('RefreshAuthToken'))
                                    $.ajax({
                                     method: 'PUT',
                                     url: `/api/accounts/profile/${data.username}`,
@@ -108,16 +133,10 @@ $.ajax({
                                       'gender':$( "#gender" ).val(),
                                       'dateOfBirth':$( "#date" ).val(),
                                     },
-                                    headers: {
-                                        'Authorization': `Bearer ${data1.access}`,
-                                    },
                                     success:function(data2) {
                                         console.log(data2)
                                             window.location.assign("/")
                                     	},
-                                    error:function(data2) {
-                                        console.log(data2)
-                                    	}
                                     })
                         	}
                         })

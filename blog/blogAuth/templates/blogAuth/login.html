@@ -28,6 +28,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/profile/">Profile</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/chat/">Chat</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Auth
@@ -54,9 +57,9 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Password</span>
                     </div>
-                    <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="password">
+                    <input type="password" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="password">
           </div>
-                <button type="submit" class="btn btn-danger" style="width: 100%" id="b">Submit</button>
+                <button type="submit" class="btn btn-danger" style="width: 100%" id="b">submit</button>
             </div>
     <a href="/register/">Registration</a>
 </body>
@@ -67,14 +70,13 @@ $(document).ready(function(){
 $('#b').click(function(){
    $.ajax({
      method: 'POST',
-     url: '/auth/jwt/create/',
+     url: '/api/accounts/auth',
      data: {
        'username':$( "#username" ).val(),
        'password':$( "#password" ).val(),
+       'csrfmiddlewaretoken': '{{ csrf_token }}'
      },
      success:function(data1) {
-          localStorage.setItem('RefreshAuthToken', data1.refresh);
-          console.log(localStorage.getItem('RefreshAuthToken'))
             window.location.assign("/")
    	}
    })
