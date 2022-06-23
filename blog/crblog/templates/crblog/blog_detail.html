@@ -29,13 +29,22 @@
           <li class="nav-item">
           <a class="nav-link" href="/chat/">Chat</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/emailSend/">Mailing</a>
+        </li>
+          </li>
+          {% if user.is_superuser %}
+          <li class="nav-item">
+          <a class="nav-link" href="/monitor-task/">Monitor Task</a>
+        </li>
+          {% endif %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Auth
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/login/">Login</a></li>
-            <li><a class="dropdown-item" href="/register/">Registrartion</a></li>
+            <li><a class="dropdown-item" href="/register/">Registration</a></li>
           </ul>
         </li>
       </ul>
@@ -53,7 +62,7 @@
     <hr>
     <div>
         <p>Comment: </p>  <textarea id="mes" name="w3review" rows="4" cols="50"></textarea> <br>
-        <button id="b">Post</button> <br>
+        <button id="b">Submit</button> <br>
     </div>
     <hr>
     <div id ="comments">

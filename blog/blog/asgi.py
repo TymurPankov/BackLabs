@@ -13,14 +13,14 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 import chat.routing
-
+import blogTask.routing
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blog.settings')
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),
     'websocket': AuthMiddlewareStack(
         URLRouter(
-            chat.routing.websockets
+            chat.routing.websockets+blogTask.routing.websockets
         )
     )
 })

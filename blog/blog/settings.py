@@ -42,10 +42,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_celery_beat',
+    'django_celery_results',
     'rest_framework',
     'chat',
     'blogAuth',
     'crblog',
+    'blogTask',
     'drf_yasg',
 
 ]
@@ -166,3 +169,20 @@ DJOSER = {
     'SERIALIZERS': {},
     'LOGIN_FIELD': 'username',
 }
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Kiev'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'forcelerydjango@gmail.com'
+EMAIL_HOST_PASSWORD = 'avaaufeehefbujce'

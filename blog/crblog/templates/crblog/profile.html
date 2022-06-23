@@ -52,13 +52,22 @@
           <li class="nav-item">
           <a class="nav-link" href="/chat/">Chat</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/emailSend/">Mailing</a>
+        </li>
+          </li>
+          {% if user.is_superuser %}
+          <li class="nav-item">
+          <a class="nav-link" href="/monitor-task/">Monitor Task</a>
+        </li>
+          {% endif %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Auth
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="/login/">Login</a></li>
-            <li><a class="dropdown-item" href="/register/">Registrartion</a></li>
+            <li><a class="dropdown-item" href="/register/">Registration</a></li>
           </ul>
         </li>
       </ul>
@@ -66,18 +75,19 @@
   </div>
 </nav>
 <div id="main">
-    <p id="username">Username: </p>
+    <p id="username">Name: </p>
     <p id="mail">Email: </p>
     <p id="date">Date of birth: </p>
     <p id="gender">Gender: </p>
     <hr>
     <div style="text-align: center" id="blogi">
-        <a href="/create/" id="aleg">Create blog</a>
+        <a href="/create/" id="aleg">Create Blog</a>
     </div>
     <hr>
     <div style="text-align: center" id="blogs">
-        <h2>My blogs:</h2>
+        <h2>my blogs:</h2>
     </div>
+
 </div>
 
 </body>

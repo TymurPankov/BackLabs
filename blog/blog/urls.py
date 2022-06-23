@@ -12,6 +12,7 @@ urlpatterns = [
     path("chat/", include("chat.urls")),
     path("", include("blogAuth.url")),
     path("", include("crblog.url")),
+    path("", include("blogTask.url")),
 ]
 
 urlpatterns += doc_url

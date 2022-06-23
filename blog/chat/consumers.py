@@ -33,16 +33,18 @@ class PracticeConsumer(WebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
+                'username': self.user.username,
                 'message' : message,
             }
         )
 
     def chat_message(self, event):
+        username = event['username']
         message = event['message']
         self.send(text_data=json.dumps({
             'type': 'chat',
             'message': message,
-            'username': self.user.username
+            'username': username
         }))
     def user_on(self, event):
         users = event['users']

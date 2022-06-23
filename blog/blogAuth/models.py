@@ -17,12 +17,12 @@ class Client (models.Model):
                              choices=GENDER_CHOICES,
                              default="Ml")
 
-    dateOfBirth = models.DateField("Дата выхода", auto_now_add=False, null=True)
+    dateOfBirth = models.DateField("Date", auto_now_add=False, null=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.id}"
 
     class Meta:
-        verbose_name = "Пользователь"
-        verbose_name_plural = "Пользователи"
+        verbose_name = "User"
+        verbose_name_plural = "Users"
 

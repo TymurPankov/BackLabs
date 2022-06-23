@@ -13,8 +13,8 @@ class Message(models.Model):
 
 class OnlineChatUsers(models.Model):
     online = models.ManyToManyField(User, null=True, blank=True)
-    group_name = models.CharField("ИмяГруппы", max_length=50, null=True)
+    group_name = models.CharField("GroupName", max_length=50, null=True)
     class Meta:
-        verbose_name = "Онлайн"
-        verbose_name_plural = "Онлайн"
+        verbose_name = "Online"
+        verbose_name_plural = "Online"
 

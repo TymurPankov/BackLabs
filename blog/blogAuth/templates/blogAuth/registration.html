@@ -31,6 +31,15 @@
           <li class="nav-item">
           <a class="nav-link" href="/chat/">Chat</a>
         </li>
+          <li class="nav-item">
+          <a class="nav-link" href="/emailSend/">Mailing</a>
+        </li>
+          </li>
+          {% if user.is_superuser %}
+          <li class="nav-item">
+          <a class="nav-link" href="/monitor-task/">Monitor Task</a>
+        </li>
+          {% endif %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Auth
@@ -74,9 +83,9 @@
 
                     <input type="date" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" id="date">
           </div>
-          <button type="submit" class="btn btn-danger" style="width: 100%" id="b">submit</button>
+          <button type="submit" class="btn btn-danger" style="width: 100%" id="b">Submit</button>
             </div>
-    <a href="/login/">Sign in</a>
+    <a href="/login/">Sign In</a>
 </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
